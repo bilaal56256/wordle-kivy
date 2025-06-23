@@ -30,4 +30,3 @@ jobs:
         with:
           name: wordle-app-apk
           path: bin/*.apk
-Create GitHub Action to build APK
