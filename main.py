@@ -19,7 +19,7 @@ import os
 Window.clearcolor = (0.1, 0.1, 0.1, 1)
 LabelBase.register(name='Roboto', fn_regular='BebasNeue-Regular.ttf')
 store = JsonStore("game_data.json")
-
+## redoooooo
 APP_ID = "ca-app-pub-1644069676777509~2139726918"
 BANNER_ID = "ca-app-pub-1644069676777509/9056203649"
 
