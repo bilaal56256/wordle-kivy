@@ -24,21 +24,23 @@ jobs:
           sudo apt install -y zip unzip openjdk-11-jdk python3-pip git wget
           pip install buildozer cython
 
-          # Accept all Android SDK licenses
-          mkdir -p "$HOME/.android"
-          touch "$HOME/.android/repositories.cfg"
-          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > "$HOME/.android/repositories.cfg"
+          # Accept all SDK licenses (bypasses interactive prompts)
+          mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
 
-          # Remove broken build-tools to force proper reinstall
-          rm -rf ~/.buildozer/android/platform/android-sdk/build-tools
+          # Manually create license file with Google's hash
+          mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
 
-          # Install Apache Ant manually (needed for Kivy builds)
+          # Install Apache Ant
           wget https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.zip
           unzip apache-ant-1.9.4-bin.zip
           export ANT_HOME=$PWD/apache-ant-1.9.4
           export PATH=$ANT_HOME/bin:$PATH
 
-          # Build the APK
+          # Clean up old or broken build tools
+          rm -rf ~/.buildozer/android/platform/android-sdk/build-tools
+
+          # Build APK
           buildozer android debug
 
       - name: Upload APK
