@@ -23,7 +23,7 @@ android.enable_androidx = 1
 android.use_android_native_api = False
 android.archs = arm64-v8a,armeabi-v7a
 
-# Include font, word list, and images
+# Optional image and font assets
 presplash.filename = splash.png
 icon.filename = icon.png
 
