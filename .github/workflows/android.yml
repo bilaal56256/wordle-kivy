@@ -18,29 +18,28 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies and build APK
+      - name: Install dependencies and Android SDK command line tools
         run: |
           sudo apt update
           sudo apt install -y zip unzip openjdk-11-jdk python3-pip git wget
+
+          # Install Android command line tools (sdkmanager)
+          mkdir -p ~/.buildozer/android/platform
+          cd ~/.buildozer/android/platform
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip
+          mkdir -p android-sdk/cmdline-tools/latest
+          mv cmdline-tools/* android-sdk/cmdline-tools/latest/
+
+          # Accept licenses
+          mkdir -p android-sdk/licenses
+          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > android-sdk/licenses/android-sdk-license
+
+          cd -
+
+      - name: Install Python tools and Build APK
+        run: |
           pip install buildozer cython
-
-          # Accept all SDK licenses (bypasses interactive prompts)
-          mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-
-          # Manually create license file with Google's hash
-          mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-
-          # Install Apache Ant
-          wget https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.zip
-          unzip apache-ant-1.9.4-bin.zip
-          export ANT_HOME=$PWD/apache-ant-1.9.4
-          export PATH=$ANT_HOME/bin:$PATH
-
-          # Clean up old or broken build tools
-          rm -rf ~/.buildozer/android/platform/android-sdk/build-tools
-
-          # Build APK
           buildozer android debug
 
       - name: Upload APK
