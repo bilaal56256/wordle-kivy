@@ -10,7 +10,7 @@ orientation = portrait
 fullscreen = 1
 osx.python_version = 3
 
-# Android configuration
+# Android configuration #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 android.api = 31
 android.minapi = 21
 android.sdk = 30
