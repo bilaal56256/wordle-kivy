@@ -24,17 +24,20 @@ jobs:
           sudo apt install -y zip unzip openjdk-11-jdk python3-pip git wget
           pip install buildozer cython
 
-          # Accept Android SDK licenses
+          # Accept Android SDK license manually
           mkdir -p "$HOME/.android"
-          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > "$HOME/.android/repositories.cfg"
+          echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$HOME/.android/repositories.cfg"
 
-          # Install Apache Ant manually (required for Buildozer)
+          # Manually install Apache Ant (required for Buildozer)
           wget https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.zip
           unzip apache-ant-1.9.4-bin.zip
           export ANT_HOME=$PWD/apache-ant-1.9.4
           export PATH=$ANT_HOME/bin:$PATH
 
-          # Build the APK
+          # Force build tools to 30.0.3 to avoid build-tools 36 issues
+          echo "buildozer android update --build-tools 30.0.3" > ~/.bashrc
+
+          # Build APK
           buildozer android debug
 
       - name: Upload APK
